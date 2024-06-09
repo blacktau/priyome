@@ -32,7 +32,6 @@ func (h *PostLoginHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	password := r.FormValue("password")
 
 	user, err := h.userStore.GetUser(email)
-
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		c := templates.LoginError()
@@ -52,7 +51,6 @@ func (h *PostLoginHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	session, err := h.sessionStore.CreateSession(&store.Session{
 		UserID: user.ID,
 	})
-
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
