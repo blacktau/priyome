@@ -69,7 +69,7 @@ type params struct {
 	keyLength   uint32
 }
 
-func (h *PasswordHash) ComparePasswordAndHash(password, encodedHash string) (mathc bool, err error) {
+func (h *PasswordHash) ComparePasswordAndHash(password, encodedHash string) (match bool, err error) {
 	p, salt, hash, err := h.decodeHash(encodedHash)
 	if err != nil {
 		return false, err

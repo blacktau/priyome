@@ -20,7 +20,6 @@ func NewUserStore(db *gorm.DB, passwordHash hash.PasswordHash) *UserStore {
 
 func (s *UserStore) CreateUser(email string, password string) error {
 	hashedPassword, err := s.passwordHash.GenerateFromPassword(password)
-
 	if err != nil {
 		return err
 	}
@@ -34,8 +33,7 @@ func (s *UserStore) CreateUser(email string, password string) error {
 func (s *UserStore) GetUser(email string) (*store.User, error) {
 	var user store.User
 
-	err := s.db.Where("email = ?", email).Error
-
+	err := s.db.Where("email = ?", email).First(&user).Error
 	if err != nil {
 		return nil, err
 	}

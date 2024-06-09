@@ -5,7 +5,6 @@ import (
 	"encoding/base64"
 	"net/http"
 	"net/http/httptest"
-
 	"testing"
 
 	hashmock "github.com/blacktau/priyome/internal/hash/mock"
@@ -30,12 +29,13 @@ func TestLogin(t *testing.T) {
 		expectedCookie               *http.Cookie
 	}{
 		{
-			name:                "success",
-			email:               user.Email,
-			password:            user.Password,
-			getUserResult:       user,
-			createSessionResult: &store.Session{UserID: 1, SessionID: "sessionId"},
-			expectedStatusCode:  http.StatusOK,
+			name:                         "success",
+			email:                        user.Email,
+			password:                     user.Password,
+			getUserResult:                user,
+			comparePasswordAndHashResult: true,
+			createSessionResult:          &store.Session{UserID: 1, SessionID: "sessionId"},
+			expectedStatusCode:           http.StatusOK,
 			expectedCookie: &http.Cookie{
 				Name:     "session",
 				Value:    base64.StdEncoding.EncodeToString([]byte("sessionId:1")),
@@ -67,14 +67,20 @@ func TestLogin(t *testing.T) {
 			sessionStore := &storemock.SessionStoreMock{}
 			passwordHash := &hashmock.PasswordHashMock{}
 
-			userStore.On("GetUser", tc.email).Return(tc.getUserResult, tc.getUserError)
+			userStore.
+				On("GetUser", tc.email).
+				Return(tc.getUserResult, tc.getUserError)
 
 			if tc.getUserResult != nil {
-				passwordHash.On("ComparePasswordAndHash", tc.password, tc.getUserResult.Password)
+				passwordHash.
+					On("ComparePasswordAndHash", tc.password, tc.getUserResult.Password).
+					Return(tc.comparePasswordAndHashResult, nil)
 			}
 
 			if tc.getUserResult != nil && tc.comparePasswordAndHashResult {
-				sessionStore.On("CreateSession", &store.Session{UserID: tc.getUserResult.ID})
+				sessionStore.
+					On("CreateSession", &store.Session{UserID: tc.getUserResult.ID}).
+					Return(tc.createSessionResult, nil)
 			}
 
 			handler := NewPostLoginHandler(userStore, sessionStore, passwordHash, "session")

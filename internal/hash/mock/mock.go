@@ -6,7 +6,7 @@ type PasswordHashMock struct {
 	mock.Mock
 }
 
-func (m *PasswordHashMock) ComparePasswordAndHash(password string, encodedHash string) (bool, error) {
+func (m *PasswordHashMock) ComparePasswordAndHash(password, encodedHash string) (bool, error) {
 	args := m.Called(password, encodedHash)
 	return args.Bool(0), args.Error(1)
 }

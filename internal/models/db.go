@@ -131,7 +131,7 @@ func runFile(file string) error {
 
 	_, err = db.Exec(string(sql))
 	if err != nil {
-		return fmt.Errorf("Failed to apply %q to database: %w")
+		return fmt.Errorf("Failed to apply %q to database: %w", file, err)
 	}
 
 	return nil

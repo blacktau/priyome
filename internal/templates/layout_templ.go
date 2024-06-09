@@ -161,7 +161,7 @@ func nav() templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if middleware.GetUser(ctx) != nil {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<li><button class=\"text-gray-200\" hx-post=\"/logout\">Logout</button></li>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<li><button class=\"text-gray-200\" hx-target=\"body\" hx-swap=\"innerHTML\" hx-post=\"/logout\">Logout</button></li>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
