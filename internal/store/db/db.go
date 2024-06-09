@@ -18,9 +18,8 @@ func open(dbName string) (*gorm.DB, error) {
 }
 
 func MustOpen(dbName string) *gorm.DB {
-
 	if dbName == "" {
-		dbName = "goth.db"
+		dbName = "priyome.db"
 	}
 
 	db, err := open(dbName)
@@ -29,7 +28,6 @@ func MustOpen(dbName string) *gorm.DB {
 	}
 
 	err = db.AutoMigrate(&store.User{}, &store.Session{})
-
 	if err != nil {
 		panic(err)
 	}
