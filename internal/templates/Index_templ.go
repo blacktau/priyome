@@ -60,7 +60,7 @@ func GuestIndex() templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div>Welcome guest</div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container flex-col gap-10 items-center\"><div class=\"hero\"><div class=\"hero-content flex-col lg:flex-row\"><chess-board position=\"start\" class=\"w-96\"></chess-board><div class=\"container flex flex-col gap-10\"><h1 class=\"text-5xl\">Play Chess Online</h1><div hx-get=\"/play/online\" hx-push-url=\"/play/online\" hx-target=\"#main\" class=\"btn btn-primary btn-lg cursor-pointer\"><h2>Play Online</h2></div><div hx-get=\"/play/computer\" hx-push-url=\"/play/computer\" hx-target=\"#main\" class=\"btn btn-secondary btn-lg\"><h2>Play Computer</h2></div></div></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

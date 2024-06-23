@@ -3,6 +3,7 @@ package templates
 import (
 	"os"
 	"github.com/blacktau/priyome/internal/middleware"
+	"github.com/blacktau/priyome/internal/config"
 )
 
 templ header(title string) {
@@ -10,56 +11,173 @@ templ header(title string) {
 		<title>{ title }</title>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<script src="static/script/htmx.min.js" nonce={ middleware.GetHtmxNonce(ctx) }></script>
-		<script src="static/script/response-targets.js" nonce={ middleware.GetResponseTargetsNonce(ctx) }></script>
+		<link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml"/>
 		if os.Getenv("env") == "production" {
-			<link rel="stylesheet" href="static/css/style.min.css" nonce={ middleware.GetTwNonce(ctx) }/>
+			<script src="/static/script/script.min.js" if config.CspEnabled() {
+	nonce={ middleware.GetNonce(ctx,
+    middleware.ScriptNonce) }
+}></script>
+			<link
+				rel="stylesheet"
+				href="/static/css/style.min.css"
+				if config.CspEnabled() {
+					nonce={ middleware.GetNonce(ctx,
+    middleware.TailWindCSSNonce) }
+				}
+			/>
 		} else {
-			<link rel="stylesheet" href="static/css/style.css" nonce={ middleware.GetTwNonce(ctx) }/>
+			<script src="/static/script/script.js" if config.CspEnabled() {
+	nonce={ middleware.GetNonce(ctx,
+    middleware.ScriptNonce) }
+}></script>
+			<link
+				rel="stylesheet"
+				href="/static/css/style.css"
+				if config.CspEnabled() {
+					nonce={ middleware.GetNonce(ctx,
+    middleware.TailWindCSSNonce) }
+				}
+			/>
 		}
 	</head>
 }
 
 templ footer() {
-	<footer class="bg-primary-600 p-4"></footer>
+	<footer class="footer"></footer>
 }
 
 templ nav() {
-	<nav class="bg-primary-600 p-4">
-		<div class="container flex justify-between">
-			<ol class="flex space-x-4">
-				<li>
-					<a class="text-gray-200" href="/">Home</a>
-				</li>
-				<li>
-					<a class="text-gray-200" href="/about">About</a>
-				</li>
-			</ol>
-			<ol class="flex space-x-4">
-				if middleware.GetUser(ctx) != nil {
-					<li>
-						<button class="text-gray-200" hx-target="body" hx-swap="innerHTML" hx-post="/logout">Logout</button>
-					</li>
-				} else {
-					<li>
-						<a class="text-gray-200" href="/register">Register</a>
-					</li>
-					<li>
-						<a class="text-gray-200" href="/login">Login</a>
-					</li>
-				}
-			</ol>
+	<div class="flex flex-col place-items-center bg-base-100 w-56">
+		<div class="place-items-center space-y-2">
+			<a tabindex="0" role="button" href="/">
+				<img src="/static/img/logo.svg" class="w-full" alt="Home"/>
+			</a>
 		</div>
-	</nav>
+		<div class="grid h-20 card place-items-center space-y-2">
+			<ul class="menu bg-base-200 w-56 rounded-box">
+				<li>
+					<a hx-get="/" hx-push-url="/" hx-target="#main" href="/">Home</a>
+				</li>
+				<li>
+					<a hx-get="/about" hx-push-url="/about" hx-target="#main" href="/about">About</a>
+				</li>
+			</ul>
+		</div>
+		<div class="divider"></div>
+		<div class="place-items-center flex gap-2">
+			if middleware.GetUser(ctx) != nil {
+				<a class="btn text-gray-200" hx-target="body" hx-swap="innerHTML" hx-post-url="/logout" hx-post="/logout">Logout</a>
+			} else {
+				<a class="btn text m-y-10" hx-push-url="/register" href="/register">Register</a>
+				<a class="btn text m-y-10 btn-primary" hx-push-url="/login" href="/login">Login</a>
+			}
+		</div>
+		<div class="divider"></div>
+		<div class="place-items-center">
+			<div class="dropdown mb-72">
+				<div tabindex="0" role="button" class="btn m-1">
+					Theme
+					<svg
+						width="12px"
+						height="12px"
+						class="h-2 w-2 fill-current opacity-60 inline-block"
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 2048 2048"
+					>
+						<path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
+					</svg>
+				</div>
+				<!-- 'light', 'dark', 'forest', 'retro', 'valentine', 'night', 'fantasy'] -->
+				<ul tabindex="0" class="dropdown-content z-[1] p-2 shadow-2xl bg-base-300 rounded-box w-52">
+					<li>
+						<input
+							type="radio"
+							name="theme-dropdown"
+							class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+							aria-label="Default"
+							value="default"
+						/>
+					</li>
+					<li>
+						<input
+							type="radio"
+							name="theme-dropdown"
+							class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+							aria-label="Light"
+							value="light"
+						/>
+					</li>
+					<li>
+						<input
+							type="radio"
+							name="theme-dropdown"
+							class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+							aria-label="Dark"
+							value="dark"
+						/>
+					</li>
+					<li>
+						<input
+							type="radio"
+							name="theme-dropdown"
+							class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+							aria-label="Forest"
+							value="forest"
+						/>
+					</li>
+					<li>
+						<input
+							type="radio"
+							name="theme-dropdown"
+							class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+							aria-label="Retro"
+							value="retro"
+						/>
+					</li>
+					<li>
+						<input
+							type="radio"
+							name="theme-dropdown"
+							class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+							aria-label="Night"
+							value="Night"
+						/>
+					</li>
+					<li>
+						<input
+							type="radio"
+							name="theme-dropdown"
+							class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+							aria-label="Valentine"
+							value="valentine"
+						/>
+					</li>
+					<li>
+						<input
+							type="radio"
+							name="theme-dropdown"
+							class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+							aria-label="Fantasy"
+							value="fantasy"
+						/>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
 }
 
 templ Layout(contents templ.Component, title string) {
 	@header(title)
-	<body class="flex flex-col h-full">
-		@nav()
-		<main class="flex-1 container">
-			@contents
-		</main>
-		@footer()
+	<body class="h-full bg flex justify-items-stretch">
+		<div class="max-w-56 w-56 h-full">
+			@nav()
+		</div>
+		<div class="flex flex-col items-center justify-center grow">
+			<div class="container" id="main">
+				@contents
+			</div>
+			@footer()
+		</div>
 	</body>
 }

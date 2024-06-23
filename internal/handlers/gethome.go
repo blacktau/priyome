@@ -20,21 +20,10 @@ func (h *HomeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		c := templates.GuestIndex()
 
-		err := templates.Layout(c, "Priyome").Render(r.Context(), w)
-
-		if err != nil {
-			http.Error(w, "Error rendering template", http.StatusInternalServerError)
-			return
-		}
-
+		renderPage(c, w, r)
 		return
 	}
 
 	c := templates.Index(user.Email)
-	err := templates.Layout(c, "Priyome").Render(r.Context(), w)
-
-	if err != nil {
-		http.Error(w, "Error rendering template", http.StatusInternalServerError)
-		return
-	}
+	renderPage(c, w, r)
 }

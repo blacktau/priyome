@@ -1,9 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 
+const { default: daisyui } = require('daisyui')
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-  content: [ "./**/*.html", "./**/*.templ", "./**/*.go", ],
+  content: ["./**/*.html", "./**/*.templ", "./**/*.go",],
   theme: {
     container: {
       center: true,
@@ -24,7 +25,11 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/forms'),
-    require('@tailwindcss/typography')
+    require('@tailwindcss/typography'),
+    require('daisyui')
   ],
+  daisyui: {
+    themes: ['light', 'dark', 'forest', 'retro', 'valentine', 'night', 'fantasy']
+  }
 }
 
