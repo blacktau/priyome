@@ -1,0 +1,1 @@
+../../node_modules/htmx-ext-response-targets/response-targets.js

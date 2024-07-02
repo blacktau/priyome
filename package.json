@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "chessboard-element": "^1.2.0",
-    "htmx.org": "^1.9.12"
+    "htmx-ext-response-targets": "^2.0.0",
+    "htmx.org": "^2.0.0"
   }
 }

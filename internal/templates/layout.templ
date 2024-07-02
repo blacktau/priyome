@@ -13,7 +13,7 @@ templ header(title string) {
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml"/>
 		if os.Getenv("env") == "production" {
-			<script src="/static/script/script.min.js" if config.CspEnabled() {
+			<script src="/static/script/script.min.js" type="module" if config.CspEnabled() {
 	nonce={ middleware.GetNonce(ctx,
     middleware.ScriptNonce) }
 }></script>
@@ -26,10 +26,9 @@ templ header(title string) {
 				}
 			/>
 		} else {
-			<script src="/static/script/script.js" if config.CspEnabled() {
-	nonce={ middleware.GetNonce(ctx,
-    middleware.ScriptNonce) }
-}></script>
+			<script src="/static/script/htmx.min.js"></script>
+			<script src="/static/script/response-targets.js"></script>
+			<script src="/static/script/script.js"></script>
 			<link
 				rel="stylesheet"
 				href="/static/css/style.css"
@@ -56,10 +55,10 @@ templ nav() {
 		<div class="grid h-20 card place-items-center space-y-2">
 			<ul class="menu bg-base-200 w-56 rounded-box">
 				<li>
-					<a hx-get="/" hx-push-url="/" hx-target="#main" href="/">Home</a>
+					<a hx-target="#main" href="/">Home</a>
 				</li>
 				<li>
-					<a hx-get="/about" hx-push-url="/about" hx-target="#main" href="/about">About</a>
+					<a hx-target="#main" href="/about" hx-swap="innerHTML">About</a>
 				</li>
 			</ul>
 		</div>
@@ -168,16 +167,19 @@ templ nav() {
 }
 
 templ Layout(contents templ.Component, title string) {
-	@header(title)
-	<body class="h-full bg flex justify-items-stretch">
-		<div class="max-w-56 w-56 h-full">
-			@nav()
-		</div>
-		<div class="flex flex-col items-center justify-center grow">
-			<div class="container" id="main">
-				@contents
+	<!DOCTYPE html>
+	<html lang="en">
+		@header(title)
+		<body class="h-full bg flex justify-items-stretch" hx-boost="true">
+			<div class="max-w-56 w-56 h-full">
+				@nav()
 			</div>
-			@footer()
-		</div>
-	</body>
+			<div class="flex flex-col items-center justify-center grow">
+				<div class="container" id="main">
+					@contents
+				</div>
+				@footer()
+			</div>
+		</body>
+	</html>
 }
