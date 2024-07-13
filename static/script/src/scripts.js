@@ -1,4 +1,8 @@
+import { themeChange } from 'theme-change'
+
 export * from 'chessboard-element'
+
+themeChange()
 
 addEventListener('load', (e) => {
   document.body.addEventListener('htmx:beforeSwap', (evt) => {
