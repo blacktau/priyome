@@ -1,4 +1,4 @@
-package handlers
+package login
 
 import (
 	"encoding/base64"
@@ -8,7 +8,6 @@ import (
 
 	"github.com/blacktau/priyome/internal/hash"
 	"github.com/blacktau/priyome/internal/store"
-	"github.com/blacktau/priyome/internal/templates"
 )
 
 type PostLoginHandler struct {
@@ -18,7 +17,7 @@ type PostLoginHandler struct {
 	sessionCookieName string
 }
 
-func NewPostLoginHandler(userStore store.UserStore, sessionStore store.SessionStore, passwordHash hash.PasswordHash, sessionCookieName string) *PostLoginHandler {
+func NewPostHandler(userStore store.UserStore, sessionStore store.SessionStore, passwordHash hash.PasswordHash, sessionCookieName string) *PostLoginHandler {
 	return &PostLoginHandler{
 		userStore:         userStore,
 		sessionStore:      sessionStore,
@@ -34,7 +33,7 @@ func (h *PostLoginHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	user, err := h.userStore.GetUser(email)
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
-		c := templates.LoginError()
+		c := renderLoginError()
 		c.Render(r.Context(), w)
 		return
 	}
@@ -43,7 +42,7 @@ func (h *PostLoginHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil || !passwordIsValid {
 		w.WriteHeader(http.StatusUnauthorized)
-		c := templates.LoginError()
+		c := renderLoginError()
 		c.Render(r.Context(), w)
 		return
 	}

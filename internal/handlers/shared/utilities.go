@@ -1,10 +1,9 @@
-package handlers
+package shared
 
 import (
 	"net/http"
 
 	"github.com/a-h/templ"
-	"github.com/blacktau/priyome/internal/templates"
 )
 
 func isPartial(r *http.Request) bool {
@@ -12,12 +11,12 @@ func isPartial(r *http.Request) bool {
 	return v != ""
 }
 
-func renderPage(comp templ.Component, w http.ResponseWriter, r *http.Request) {
+func RenderPage(comp templ.Component, w http.ResponseWriter, r *http.Request) {
 	var err error
 	if isPartial(r) {
 		err = comp.Render(r.Context(), w)
 	} else {
-		err = templates.Layout(comp, "Priyome").Render(r.Context(), w)
+		err = renderLayout(comp, "Priyome").Render(r.Context(), w)
 	}
 
 	if err != nil {

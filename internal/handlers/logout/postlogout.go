@@ -1,4 +1,4 @@
-package handlers
+package logout
 
 import (
 	"net/http"
@@ -9,7 +9,7 @@ type PostLogoutHandler struct {
 	sessionCookieName string
 }
 
-func NewPostLogoutHandler(sessionCookieName string) *PostLogoutHandler {
+func NewPostHandler(sessionCookieName string) *PostLogoutHandler {
 	return &PostLogoutHandler{
 		sessionCookieName: sessionCookieName,
 	}

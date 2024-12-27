@@ -15,6 +15,8 @@ type key string
 
 var NonceKey key = "nonces"
 
+type Nonces struct{}
+
 const (
 	ScriptNonce      string = "Priyome"
 	TailWindCSSNonce string = "TailWindCSS"

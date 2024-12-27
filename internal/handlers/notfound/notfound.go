@@ -1,19 +1,19 @@
-package handlers
+package notfound
 
 import (
 	"net/http"
 
-	"github.com/blacktau/priyome/internal/templates"
+	"github.com/blacktau/priyome/internal/handlers/shared"
 )
 
 type NotFoundHandler struct{}
 
-func NewNotFoundHandler() *NotFoundHandler {
+func NewHandler() *NotFoundHandler {
 	return &NotFoundHandler{}
 }
 
 func (h *NotFoundHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	c := templates.NotFound()
+	c := renderContent()
 	w.WriteHeader(http.StatusNotFound)
-	renderPage(c, w, r)
+	shared.RenderPage(c, w, r)
 }

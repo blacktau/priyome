@@ -1,16 +1,16 @@
-package handlers
+package home
 
 import (
 	"net/http"
 
+	"github.com/blacktau/priyome/internal/handlers/shared"
 	"github.com/blacktau/priyome/internal/middleware"
 	"github.com/blacktau/priyome/internal/store"
-	"github.com/blacktau/priyome/internal/templates"
 )
 
 type HomeHandler struct{}
 
-func NewHomeHandler() *HomeHandler {
+func NewHandler() *HomeHandler {
 	return &HomeHandler{}
 }
 
@@ -18,12 +18,12 @@ func (h *HomeHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	user, ok := r.Context().Value(middleware.UserKey).(*store.User)
 
 	if !ok {
-		c := templates.GuestIndex()
+		c := renderGuestIndex()
 
-		renderPage(c, w, r)
+		shared.RenderPage(c, w, r)
 		return
 	}
 
-	c := templates.Index(user.Email)
-	renderPage(c, w, r)
+	c := renderIndex(user.Email)
+	shared.RenderPage(c, w, r)
 }

@@ -1,18 +1,18 @@
-package handlers
+package about
 
 import (
 	"net/http"
 
-	"github.com/blacktau/priyome/internal/templates"
+	"github.com/blacktau/priyome/internal/handlers/shared"
 )
 
 type AboutHandler struct{}
 
-func NewAboutHandler() *AboutHandler {
+func NewHandler() *AboutHandler {
 	return &AboutHandler{}
 }
 
 func (h *AboutHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	c := templates.About()
-	renderPage(c, w, r)
+	c := renderPage()
+	shared.RenderPage(c, w, r)
 }

@@ -11,7 +11,12 @@ import (
 	"time"
 
 	"github.com/blacktau/priyome/internal/config"
-	"github.com/blacktau/priyome/internal/handlers"
+	"github.com/blacktau/priyome/internal/handlers/about"
+	"github.com/blacktau/priyome/internal/handlers/home"
+	"github.com/blacktau/priyome/internal/handlers/login"
+	"github.com/blacktau/priyome/internal/handlers/logout"
+	"github.com/blacktau/priyome/internal/handlers/notfound"
+	"github.com/blacktau/priyome/internal/handlers/register"
 	"github.com/blacktau/priyome/internal/hash/passwordhash"
 	m "github.com/blacktau/priyome/internal/middleware"
 	"github.com/blacktau/priyome/internal/models"
@@ -65,15 +70,15 @@ func main() {
 
 		r.Use(middlewares...)
 
-		r.NotFound(handlers.NewNotFoundHandler().ServeHTTP)
+		r.NotFound(notfound.NewHandler().ServeHTTP)
 
-		r.Get("/", handlers.NewHomeHandler().ServeHTTP)
-		r.Get("/about", handlers.NewAboutHandler().ServeHTTP)
-		r.Get("/register", handlers.NewGetRegisterHandler().ServeHTTP)
-		r.Post("/register", handlers.NewPostRegisterHandler(userStore).ServeHTTP)
-		r.Get("/login", handlers.NewGetLoginHandler().ServeHTTP)
-		r.Post("/login", handlers.NewPostLoginHandler(userStore, sessionStore, passwordhash, cfg.SessionCookieName).ServeHTTP)
-		r.Post("/logout", handlers.NewPostLogoutHandler(cfg.SessionCookieName).ServeHTTP)
+		r.Get("/", home.NewHandler().ServeHTTP)
+		r.Get("/about", about.NewHandler().ServeHTTP)
+		r.Get("/register", register.NewGetHandler().ServeHTTP)
+		r.Post("/register", register.NewPostHandler(userStore).ServeHTTP)
+		r.Get("/login", login.NewGetHandler().ServeHTTP)
+		r.Post("/login", login.NewPostHandler(userStore, sessionStore, passwordhash, cfg.SessionCookieName).ServeHTTP)
+		r.Post("/logout", logout.NewPostHandler(cfg.SessionCookieName).ServeHTTP)
 	})
 
 	killSig := make(chan os.Signal, 1)
