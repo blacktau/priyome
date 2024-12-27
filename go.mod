@@ -19,8 +19,8 @@ require (
 	github.com/google/uuid v1.5.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/stretchr/testify v1.9.0
-	golang.org/x/crypto v0.23.0
-	golang.org/x/sys v0.20.0 // indirect
+	golang.org/x/crypto v0.31.0
+	golang.org/x/sys v0.28.0 // indirect
 	gorm.io/driver/sqlite v1.5.5
 	gorm.io/gorm v1.25.10
 )
