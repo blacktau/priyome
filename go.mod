@@ -1,6 +1,7 @@
 module github.com/blacktau/priyome
 
-go 1.22.1
+go 1.23.0
+
 toolchain go1.24.1
 
 require (
@@ -17,7 +18,7 @@ require (
 require (
 	github.com/a-h/templ v0.2.793
 	github.com/go-chi/chi v1.5.5
-	github.com/go-chi/chi/v5 v5.2.0
+	github.com/go-chi/chi/v5 v5.2.2
 	github.com/google/uuid v1.6.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/stretchr/testify v1.10.0
