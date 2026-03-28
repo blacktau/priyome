@@ -1,3 +1,3 @@
 module github.com/blacktau/priyome/gameserver
 
-go 1.18
+go 1.25

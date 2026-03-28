@@ -10,7 +10,7 @@ type PostRegisterHandler struct {
 	userStore store.UserStore
 }
 
-func NewPostHandler(userStore store.UserStore) *PostRegisterHandler {
+func NewPostRegisterHandler(userStore store.UserStore) *PostRegisterHandler {
 	return &PostRegisterHandler{
 		userStore: userStore,
 	}

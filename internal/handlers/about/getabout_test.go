@@ -27,19 +27,14 @@ func TestGetAboutHandler(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			assert := assert.New(t)
+			assertion := assert.New(t)
 
 			handler := NewHandler()
 
 			req, err := http.NewRequest("GET", "/about", nil)
-			assert.NoError(err)
+			assertion.NoError(err)
 
-			value := middleware.Nonces{
-				Htmx:            "nonce-1234",
-				ResponseTargets: "nonce-5678",
-				Tw:              "nonce-9101",
-				HtmxCSSHash:     "sha256-pgn1TCGZX6O77zDvy0oTODMOxemn0oj0LeCnQTRj7Kg=",
-			}
+			value := middleware.Nonces{}
 			ctx := context.WithValue(req.Context(), middleware.NonceKey, value)
 			req = req.WithContext(ctx)
 
@@ -47,9 +42,9 @@ func TestGetAboutHandler(t *testing.T) {
 
 			handler.ServeHTTP(rr, req)
 
-			assert.Equal(tc.expectedStatusCode, rr.Code, "handler returned wrong status code: got %v want %v", rr.Code, tc.expectedStatusCode)
+			assertion.Equal(tc.expectedStatusCode, rr.Code, "handler returned wrong status code: got %v want %v", rr.Code, tc.expectedStatusCode)
 
-			assert.True(bytes.Contains(rr.Body.Bytes(), tc.expectedBody), "handler returned unexpected body: got %v want %v", rr.Body.String(), string(tc.expectedBody))
+			assertion.True(bytes.Contains(rr.Body.Bytes(), tc.expectedBody), "handler returned unexpected body: got %v want %v", rr.Body.String(), string(tc.expectedBody))
 		})
 	}
 }

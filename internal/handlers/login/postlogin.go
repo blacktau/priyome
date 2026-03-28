@@ -17,7 +17,7 @@ type PostLoginHandler struct {
 	sessionCookieName string
 }
 
-func NewPostHandler(userStore store.UserStore, sessionStore store.SessionStore, passwordHash hash.PasswordHash, sessionCookieName string) *PostLoginHandler {
+func NewPostLoginHandler(userStore store.UserStore, sessionStore store.SessionStore, passwordHash hash.PasswordHash, sessionCookieName string) *PostLoginHandler {
 	return &PostLoginHandler{
 		userStore:         userStore,
 		sessionStore:      sessionStore,

@@ -23,8 +23,8 @@ import (
 	database "github.com/blacktau/priyome/internal/store/db"
 	"github.com/blacktau/priyome/internal/store/dbstore"
 
-	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 )
 
 var Environment = "development"
@@ -75,9 +75,9 @@ func main() {
 		r.Get("/", home.NewHandler().ServeHTTP)
 		r.Get("/about", about.NewHandler().ServeHTTP)
 		r.Get("/register", register.NewGetHandler().ServeHTTP)
-		r.Post("/register", register.NewPostHandler(userStore).ServeHTTP)
+		r.Post("/register", register.NewPostRegisterHandler(userStore).ServeHTTP)
 		r.Get("/login", login.NewGetHandler().ServeHTTP)
-		r.Post("/login", login.NewPostHandler(userStore, sessionStore, passwordhash, cfg.SessionCookieName).ServeHTTP)
+		r.Post("/login", login.NewPostLoginHandler(userStore, sessionStore, passwordhash, cfg.SessionCookieName).ServeHTTP)
 		r.Post("/logout", logout.NewPostHandler(cfg.SessionCookieName).ServeHTTP)
 	})
 
@@ -115,3 +115,4 @@ func main() {
 
 	slog.Info("Server shutdown complete")
 }
+
